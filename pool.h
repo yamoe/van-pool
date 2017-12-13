@@ -259,24 +259,19 @@ namespace van {
 			get_tls_pool<T>().ret(t);
 		}
 
-		template <int size, class T = Mem<size>>
+		template <int size>
 		void warm_up_tls_pool(int cnt) noexcept
 		{
+			using T = Mem<size>;
 			get_tls_pool<T>(cnt);
 		}
 
-		template <int size, class T = Mem<size>>
-		T* get_tls() noexcept
+		template <int size>
+		Mem<size>* get_tls() noexcept
 		{
+			using T = Mem<size>;
 			return get_tls_pool<T>().get();
 		}
-
-		template <int size, class T = Mem<size>>
-		void ret_tls(T* t) noexcept
-		{
-			get_tls_pool<Mem<size>>().ret(t);
-		}
-
 
 
 		/*******************************************
@@ -317,28 +312,26 @@ namespace van {
 			get_singleton_pool<T>().ret(t);
 		}
 
-		template <int size, class T = Mem<size>>
+		template <int size>
 		void warm_up_singleton(int cnt) noexcept
 		{
+			using T = Mem<size>;
 			std::lock_guard<std::mutex> lock(get_singleton_mutex<T>());
 			get_singleton_pool<T>(cnt);
 		}
 
-		template <int size, class T = Mem<size>>
-		T* get_singleton() noexcept
+		template <int size>
+		Mem<size>* get_singleton() noexcept
 		{
+			using T = Mem<size>;
 			std::lock_guard<std::mutex> lock(get_singleton_mutex<T>());
 			return get_singleton_pool<T>().get();
 		}
 
-		template <int size, class T = Mem<size>>
-		void ret_singleton(T* t) noexcept
-		{
-			std::lock_guard<std::mutex> lock(get_singleton_mutex<T>());
-			get_singleton_pool<T>().ret(t);
-		}
 
-
+		/*******************************************
+		 * monitor
+		 *******************************************/
 		class Count {
 			public:
 				uint64_t total_ = 0;
