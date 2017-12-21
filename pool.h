@@ -402,7 +402,7 @@ namespace van {
 
 		};
 
-		void print_stat() noexcept
+		static void print_stat() noexcept
 		{
 			Stat s = Monitor::inst().stat();
 
